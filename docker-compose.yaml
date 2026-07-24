@@ -2,13 +2,13 @@ services:
   traefik:
     image: traefik:v3.7
     command:
-      - "--configFile=/traefik/config.yaml" # matches volume path now
       - "--providers.docker=true"
       - "--providers.docker.exposedByDefault=false"
+      - "--providers.docker.network=lswxsh_web"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       - "--certificatesresolvers.letsencrypt.acme.dnschallenge=true"
-      - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=YOUR_DNS_PROVIDER"
+      - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=cloudflare"
       - "--certificatesresolvers.letsencrypt.acme.email=you@example.com"
       - "--certificatesresolvers.letsencrypt.acme.storage=/acme.json"
     ports:
@@ -16,15 +16,15 @@ services:
       - "443:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./traefik/config.yaml:/traefik/config.yaml:ro
       - ./traefik/acme.json:/acme.json
     environment:
-      - YOUR_DNS_PROVIDER_API_TOKEN=xxxx # e.g. CF_DNS_API_TOKEN for Cloudflare
+      - CF_DNS_API_TOKEN=your_real_cloudflare_token
     networks:
       - web
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=lswxsh_web"
       - "traefik.http.routers.traefik-dashboard.rule=Host(`traefik.jmkfashion.com`)"
       - "traefik.http.routers.traefik-dashboard.entrypoints=websecure"
       - "traefik.http.routers.traefik-dashboard.tls.certresolver=letsencrypt"
@@ -43,6 +43,7 @@ services:
       - .env
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=lswxsh_web"
       - "traefik.http.routers.wearjmk.rule=HostRegexp(`^.+\\.jmkfashion\\.com$`) || Host(`jmkfashion.com`)"
       - "traefik.http.routers.wearjmk.entrypoints=websecure"
       - "traefik.http.routers.wearjmk.tls.certresolver=letsencrypt"
@@ -52,4 +53,5 @@ services:
 
 networks:
   web:
+    name: lswxsh_web
     driver: bridge
