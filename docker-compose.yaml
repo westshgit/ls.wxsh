@@ -2,6 +2,8 @@ services:
   traefik:
     image: traefik:v3.7
     command:
+      - "--api=true"
+      - "--api.dashboard=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedByDefault=false"
       - "--providers.docker.network=lswxsh_web"
