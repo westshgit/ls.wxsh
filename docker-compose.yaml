@@ -20,10 +20,11 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./traefik/acme.json:/acme.json
     environment:
-      - CF_DNS_API_TOKEN=your_real_cloudflare_token
+      - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
     networks:
       - web
     restart: unless-stopped
+
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=lswxsh_web"
