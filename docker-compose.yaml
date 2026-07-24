@@ -2,13 +2,13 @@ services:
   traefik:
     image: traefik:v3.7
     command:
-      - "--configFile=/etc/traefik/traefik.yaml"
+      - "--configFile=/traefik/config/traefik.yaml"
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./traefik/traefik.yaml:/etc/traefik/traefik.yaml:ro
+      - ./traefik/traefik.yaml:/traefik/config/traefik.yaml:ro
       - ./traefik/acme.json:/acme.json
     networks:
       - web
