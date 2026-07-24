@@ -52,7 +52,7 @@ services:
       - "traefik.http.routers.wearjmk.tls.certresolver=letsencrypt"
       - "traefik.http.routers.wearjmk.tls.domains[0].main=jmkfashion.com"
       - "traefik.http.routers.wearjmk.tls.domains[0].sans=*.jmkfashion.com"
-      - "traefik.http.services.wearjmk.loadbalancer.server.port=3030"
+      - "traefik.http.services.wearjmk.loadbalancer.server.port=3000"
 
 networks:
   web:
