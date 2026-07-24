@@ -2,7 +2,7 @@ services:
   traefik:
     image: traefik:v3.7
     command:
-      - "--configFile=/traefik/config/traefik.yaml"
+      - "--configFile=/traefik/config.yaml"
     ports:
       - "80:80"
       - "443:443"
