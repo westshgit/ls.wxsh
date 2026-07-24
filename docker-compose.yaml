@@ -16,7 +16,7 @@ services:
       - "443:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./traefik/traefik.yaml:/traefik/config.yaml:ro
+      - ./traefik/config.yaml:/traefik/config.yaml:ro
       - ./traefik/acme.json:/acme.json
     environment:
       - YOUR_DNS_PROVIDER_API_TOKEN=xxxx # e.g. CF_DNS_API_TOKEN for Cloudflare
