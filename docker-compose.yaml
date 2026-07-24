@@ -23,7 +23,7 @@ services:
       - "traefik.http.middlewares.dashboard-auth.basicauth.users=admin:$$apr1$$replace$$with$$real$$hash"
 
   wearjmk:
-    image: <your-dockerhub-username>/wearjmk:latest
+    image: wshdock/wearjmk:latest
     restart: unless-stopped
     networks:
       - web
