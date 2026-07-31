@@ -41,7 +41,7 @@ services:
     networks:
       - web
     volumes:
-      - ./wearjmk-data:/wearjmk-data
+      - ./wearjmk-data:/app/data
     env_file:
       - .env
     labels:
@@ -50,8 +50,8 @@ services:
       - "traefik.http.routers.wearjmk.rule=HostRegexp(`^.+\\.${HOST}$`) || Host(`${HOST}`)"
       - "traefik.http.routers.wearjmk.entrypoints=websecure"
       - "traefik.http.routers.wearjmk.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.wearjmk.tls.domains[0].main=${HOST}com"
-      - "traefik.http.routers.wearjmk.tls.domains[0].sans=*.${HOST}com"
+      - "traefik.http.routers.wearjmk.tls.domains[0].main=${HOST}"
+      - "traefik.http.routers.wearjmk.tls.domains[0].sans=*.${HOST}"
       - "traefik.http.services.wearjmk.loadbalancer.server.port=3000"
 
 networks:
