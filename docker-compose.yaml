@@ -11,7 +11,7 @@ services:
       - "--entrypoints.websecure.address=:443"
       - "--certificatesresolvers.letsencrypt.acme.dnschallenge=true"
       - "--certificatesresolvers.letsencrypt.acme.dnschallenge.provider=cloudflare"
-      - "--certificatesresolvers.letsencrypt.acme.email=support@jmkfashion.com"
+      - "--certificatesresolvers.letsencrypt.acme.email=${SUPPORT_EMAIL}"
       - "--certificatesresolvers.letsencrypt.acme.storage=/acme.json"
     ports:
       - "80:80"
@@ -28,12 +28,12 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=lswxsh_web"
-      - "traefik.http.routers.traefik-dashboard.rule=Host(`traefik.jmkfashion.com`)"
+      - "traefik.http.routers.traefik-dashboard.rule=Host(`traefik.${HOST}`)"
       - "traefik.http.routers.traefik-dashboard.entrypoints=websecure"
       - "traefik.http.routers.traefik-dashboard.tls.certresolver=letsencrypt"
       - "traefik.http.routers.traefik-dashboard.service=api@internal"
       - "traefik.http.routers.traefik-dashboard.middlewares=dashboard-auth"
-      - "traefik.http.middlewares.dashboard-auth.basicauth.users=admin:$$apr1$$replace$$with$$real$$hash"
+      - "traefik.http.middlewares.dashboard-auth.basicauth.users=admin:${TRAEFIK_ADMIN_PASSWORD}"
 
   wearjmk:
     image: wshdock/wearjmk:latest
@@ -41,17 +41,17 @@ services:
     networks:
       - web
     volumes:
-      - ./wearjmk-data:/app/data
+      - ./wearjmk-data:/wearjmk-data
     env_file:
       - .env
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=lswxsh_web"
-      - "traefik.http.routers.wearjmk.rule=HostRegexp(`^.+\\.jmkfashion\\.com$`) || Host(`jmkfashion.com`)"
+      - "traefik.http.routers.wearjmk.rule=HostRegexp(`^.+\\.${HOST}$`) || Host(`${HOST}`)"
       - "traefik.http.routers.wearjmk.entrypoints=websecure"
       - "traefik.http.routers.wearjmk.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.wearjmk.tls.domains[0].main=jmkfashion.com"
-      - "traefik.http.routers.wearjmk.tls.domains[0].sans=*.jmkfashion.com"
+      - "traefik.http.routers.wearjmk.tls.domains[0].main=${HOST}com"
+      - "traefik.http.routers.wearjmk.tls.domains[0].sans=*.${HOST}com"
       - "traefik.http.services.wearjmk.loadbalancer.server.port=3000"
 
 networks:
